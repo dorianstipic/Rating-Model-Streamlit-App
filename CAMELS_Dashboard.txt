@@ -1,0 +1,17 @@
+@echo off
+
+REM Activate conda environment
+call activate streamlit_dashboard
+
+REM Run the Python script
+streamlit run .\1_Dashboard_Scripts\Data_Upload_and_Information.py --server.address=0.0.0.0 --server.port=8501
+
+REM Check the exit code 
+IF %ERRORLEVEL% EQU 0 (
+    echo Check the default browser.
+) ELSE (
+    echo Error: Error running the file.
+)
+
+REM Pause to keep the console window open
+pause

@@ -1,0 +1,17 @@
+@echo off
+
+REM Activate conda environment
+call activate camels_bat
+
+REM Run the Python script
+python .\1_Code\CAMELS_Model.py
+
+REM Check the exit code 
+IF %ERRORLEVEL% EQU 0 (
+    echo Check the Data output folder.
+) ELSE (
+    echo Error: Error running the file.
+)
+
+REM Pause to keep the console window open
+pause
