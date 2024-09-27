@@ -258,7 +258,7 @@ if 'upload' not in st.session_state:
 # File uploader widget
 st.markdown("<div style='text-align: center; font-size: 20px; font-family: Arial';" 
             ">Upload CAMELS Input Data:</div>", unsafe_allow_html=True)
-upload_file = st.file_uploader('Upload File', label_visibility='collapsed',type='xlsx')
+upload_file = st.file_uploader('Upload File', label_visibility='collapsed', type="xlsx")
 
 # If a file is uploaded, save it to session state and reset relevant variables
 
