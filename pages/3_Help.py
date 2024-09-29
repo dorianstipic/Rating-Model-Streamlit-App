@@ -217,9 +217,15 @@ with dashboard_help:
     st.write('''
     This section compares all financial institutions with the market (benchmark values). It includes:
     - Total Assets Market Share and Total Gross Loans Market Share: Show financial institution share in the whole market in terms of the asset and gross loan size.
-    - Relative Difference: Shows relative differences from the benchmark values for each selected CAMELS variable (except Liquidity Coverage Ratio and Asset Growth Rate 3Y Average). On relative differences, conditional formatting is applied where green color signals better results compared to the benchmark while red color signals worst result compared to the benchmark. It should be noted that both positive and negative values can indicate better results in comparison to the benchmark (this depends on the variable).
+    - Relative Difference: Shows relative differences from the benchmark values for each selected CAMELS variable. On relative differences, conditional formatting is applied where **:green[green color]** 
+    signals better results compared to the benchmark while **:red[red color]** signals worst result compared to the benchmark. It should be noted that both positive and negative values can indicate better results in 
+    comparison to the benchmark (this depends on the variable).
     - Missing Data Handling: In order to have correct market analysis representation, data from all financial institutions should be filled in .xlsx file. If there is missing data, the cell is left blank and colored in black color.
     ''')
+    st.markdown("<div style='text-align: left; font-size: 14px; font-weight: bold; font-style: italic; font-family: Arial';" 
+        ">Note:</div>", unsafe_allow_html=True)
+    st.write('''Benchmark values of Total Assets and Total Gross Loans are calculated as the sum, while the rest of the CAMELS variables are calculated as the
+             average of the inputted Data.''')
 
 # CAMELS Variables Tab
 with camels_variables_info:
