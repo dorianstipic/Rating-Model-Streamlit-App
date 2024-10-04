@@ -22,4 +22,4 @@ Once the App is open navigate to the *Data Upload and Information* tab. Upload t
 Any additional information is found inside the App on the *Help* tab.
 
 #### Additional link
-The App is deployed on the following [link](https://pages.github.com/).
+The App is deployed on the following [link](https://rating-model-app.streamlit.app/)
