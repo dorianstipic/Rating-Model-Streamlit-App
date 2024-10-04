@@ -1,1 +1,6 @@
 .ipynb_checkpoints
+.streamlit
+Testing.ipynb
+__pycache__
+Data input example FI Rating Model v3_unfiltered.xlsx
+Data input example FI Rating Model v2_unfiltered.xlsx

@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import datetime as dt
 
 # Page Configuration
 st.set_page_config(page_title='CAMELS and Market Analysis Dashboard',
@@ -136,16 +135,6 @@ def create_df_ratings(df_final, bins_dict):
 
     return df_ratings
 
-# @st.cache_resource(ttl=7200)
-# def df_format(df):
-#     df = df.copy(deep=True)
-#     if 'Date' in df.columns:
-#         df['Date'] = pd.to_datetime(df['Date']).dt.strftime('%d-%m-%Y')
-#         df = df.set_index('Date')
-#     df = df.style.format(precision=2,thousands=',',decimal='.')
-#     return df
-
-
 # Hard-coded bins for variables
 bins_dict = {'Tier 1 Capital Ratio':       ['expert', True, 0.06, 0.1, 0.14, 0.2], 
         'Debt to Equity Ratio':            ['expert', False, 6, 8, 10, 12],
@@ -176,6 +165,12 @@ camels_weights = pd.DataFrame({
     index = ['Weight']
 )
 
+mask = ['Variable 1', 'Variable 2',
+        'Variable 3', 'Variable 4',
+        'Variable 5', 'Variable 6',
+        'Variable 7', 'Variable 8',
+        'Variable 9', 'Variable 10',
+        'Variable 11']
 
 if __name__ == '__main__':
 
@@ -202,6 +197,7 @@ if __name__ == '__main__':
             st.session_state['camels_input'] = None
             st.session_state['camels_variables'] = None
             st.session_state['ratings'] = None
+            st.session_state['mask'] = None
             # Clear cache on new data upload
             st.cache_resource.clear() # fixes plot resizing issue
         except:
@@ -242,7 +238,7 @@ if __name__ == '__main__':
         
         # Show input dataframe
         # st.markdown('---')
-        with st.expander('Input Dataframe *Preview*'):
+        with st.expander('**Click here** for Input Dataframe Preview'):
             st.markdown(
                 '<div style="text-align: center; font-size: 20px; font-family: Arial";' 
                 '>Input Dataframe Preview:</div>', 
@@ -252,7 +248,7 @@ if __name__ == '__main__':
         
         # Show input dataframe statistics
         # st.markdown('---')
-        with st.expander('Input Dataframe *Information and Statistics*'):
+        with st.expander('**Click here** for Input Dataframe Information and Statistics'):
             st.markdown(
                 '<div style="text-align: center; font-size: 20px; font-family: Arial";' 
                 '>Input Dataframe Information and Statistics:</div>', 
@@ -274,3 +270,4 @@ if __name__ == '__main__':
         st.session_state['camels_input'] = df_input
         st.session_state['camels_variables'] = df_final
         st.session_state['ratings'] = df_ratings
+        st.session_state['mask'] = mask

@@ -9,6 +9,7 @@ st.set_page_config(page_title='CAMELS and Market Analysis Dashboard', layout='wi
 df_final = st.session_state.get('camels_variables')
 df_input = st.session_state.get('camels_input')
 df_bins = st.session_state.get('expert_bins')
+mask = st.session_state.get('mask')
 
 # Data Manipulation Functions
 @st.cache_data(ttl=7200) 
@@ -153,7 +154,7 @@ def styler_rel(df_tot_market, exp_bins):
 
     for c_var in styled_market_df_table.columns[2:]:
         c_var_pom = " ".join(c_var.split(" ")[0:-1])  # everything but last word
-        if c_var_pom == 'Loan Loss Provision Rate':
+        if (c_var_pom == 'Loan Loss Provision Rate') or (c_var_pom == 'Variable 4'):
             styled_market_df_table = styled_market_df_table.background_gradient(cmap=cm_blend, subset=[c_var])
         else:
             if exp_bins.loc[c_var_pom, "Reverse"]:
@@ -177,7 +178,7 @@ def styler_abs(df_tot_market, exp_bins):
     styled_market_df_table = styled_market_df_table.background_gradient(cmap=cm_green, subset=['Total Gross Loans'])
 
     for c_var in styled_market_df_table.columns[2:]:
-        if c_var == 'Loan Loss Provision Rate':
+        if (c_var == 'Loan Loss Provision Rate') or (c_var == 'Variable 4'):
             styled_market_df_table = styled_market_df_table.background_gradient(cmap=cm_blend, subset=[c_var])
         else:
             if exp_bins.loc[c_var, "Reverse"]:
@@ -213,6 +214,9 @@ if df_input is not None:
     df_tot_sum = pd.concat([df_bench, df_out], axis=0)
     df_tot_sum.index.name = "Institution Name"
     df_tot_market = market_analysis_dataframe(df_tot_sum)
+    
+    df_tot_sum.columns = list(df_tot_sum.columns[:2]) + mask
+    df_tot_market.columns = list(df_tot_market.columns[:2]) + [var+' Difference' for var in mask]
     
     # Market Analysis Dataframe
     st.markdown("<div style='text-align: center; font-size: 18px; font-weight: normal; font-family: Arial';"

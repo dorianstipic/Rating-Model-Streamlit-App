@@ -3,9 +3,10 @@ import streamlit as st
 # Set options
 st.set_page_config(page_title='CAMELS and Market Analysis Dashboard',layout='wide')
 
-# Gets data from sesstion state
+# Gets data from session state
 df_final = st.session_state.get('camels_variables')
 df_ratings = st.session_state.get('ratings')
+mask = st.session_state.get('mask')
 
 # Copy from temporary widget key to permanent key
 def keep(key):
@@ -18,6 +19,8 @@ def unkeep(key):
 # Checks if Data is Uploaded
 if df_final is not None:
 
+    df_ratings.columns = list(df_ratings.columns[:3]) + mask
+    df_final.columns = list(df_ratings.columns[:1]) + mask
     # Replace Numerical to Alphabet ratings
     df_ratings = df_ratings.drop(columns='Composite Final Score') # drop numeric rating
     df_ratings.replace([1,2,3,4,5], ['A','B','C','D','E'],inplace=True)
@@ -41,6 +44,8 @@ if df_final is not None:
     df_ratings_multiselect = df_ratings[df_ratings['Date'].isin(selected_dates)]
     df_final_multiselect = df_final[df_final['Date'].isin(selected_dates)]
 
+    # df_ratings_multiselect.columns = list(df_ratings_multiselect.columns[:2]) + mask
+    # df_final_multiselect.columns = list(df_ratings_multiselect.columns[:1]) + mask
     # Display Dataframes
     st.markdown("<div style='text-align: center; font-size: 18px; font-weight: normal; font-family: Arial';"
             ">CAMELS Ratings and Subratings</div>", unsafe_allow_html=True)

@@ -12,14 +12,16 @@ variables_description = {
         'Asset Growth Rate','Asset Growth Rate 3Y Average','Efficiency Ratio',
         'Return on Assets (ROA)','Interest Expenses to Interest Income Ratio',
         'Liquidity Coverage Ratio (LCR)','Cash Ratio',
-        'Non Interest Income Share'],
+        'Non Interest Income Share'
+    ],
     'Formula':[
         'Tier 1 Capital / Risk Weighted Assets','Total Liabilities / Total Shareholders\' Equity',
         'Non-performing Loans / Total Gross Loans','Total Provisions / Total Gross Loans','ABS(Loan Loss Provision Rate - Market Average Loan Loss Provision Rate)',
         '[Total Assets - Total Assets (t-1)] / Total Assets (t-1)','AVERAGE(Asset Growth Rate; Asset Growth Rate (t-1); Asset Growth Rate (t-2))',
         'Expenses / Net Operating Income','Net Income / Average Total Assets',
         'Interest Expenses / Interest Income','High Quality Liquid Assets / Total Net Cash Flow (over 30 day stress period)',
-        'Liquid Assets / Current Liabilities','Non Interest Income / (Non Interest Income + Interest Income)'],
+        'Liquid Assets / Current Liabilities','Non Interest Income / (Non Interest Income + Interest Income)'
+    ],
     'Description':[
                 '''The tier 1 capital ratio is the ratio of tier 1 capital to total risk exposure. 
                 Total risk exposure comprises the following: 
@@ -79,7 +81,8 @@ variables_description = {
                 '''The non-interest income share is a financial metric that assesses the portion of a bank's total income originating from activities not related 
                 to interest. A higher non-interest income share indicates a substantial portion of income from sources like fees, commissions, or other activities. 
                 These sources often provide stable income streams and are less sensitive to fluctuations in interest rates. Conversely, a lower non-interest income 
-                share suggests a significant reliance on income from interest-bearing products, which can be more vulnerable to changes in interest rates.'''],
+                share suggests a significant reliance on income from interest-bearing products, which can be more vulnerable to changes in interest rates.'''
+    ],
     'Interpretation':[
         'Higher value indicate better performance.','Lower value indicate better performance.',
         'Lower value indicate better performance.','Higher and lower values can indicate better performance.',
@@ -87,7 +90,8 @@ variables_description = {
         'Higher value indicate better performance.','Lower value indicate better performance.',
         'Higher value indicate better performance.','Lower value indicate better performance.',
         'Higher value indicate better performance.','Higher value indicate better performance.',
-        'Higher value indicate better performance.']
+        'Higher value indicate better performance.'
+    ]
     }
 
 ratings_description = {
@@ -143,8 +147,11 @@ def rating_description_table(rating_description_dict):
 
 # Creating Help Tabs
 
-dashboard_help, camels_variables_info, rating_description = st.tabs([
-    'Dashboard Help', 'CAMELS Variables Information', 'Rating Description'
+# dashboard_help, camels_variables_info, rating_description = st.tabs([
+#     'Dashboard Help', 'CAMELS Variables Information', 'Rating Description'
+# ])
+dashboard_help, rating_description = st.tabs([
+    'Dashboard Help', 'Rating Description'
 ])
 
 # Dashboard Help Tab
@@ -165,7 +172,7 @@ with dashboard_help:
     - Market Analysis
     - Help
              
-    Pages section can be collapsed clicking on the X icon in the top right corner.
+    Pages section can be collapsed clicking on the < icon in the top right corner.
     ''')
 
     # Data Upload and Information Section
@@ -199,27 +206,51 @@ with dashboard_help:
 
     # CAMELS Visualizations Section
     st.markdown('#### CAMELS Visualizations')
-    st.write('''
-    This section shows graphical representations of the CAMELS model results. It has 7 tabs:
-    - Rating Final: Shows the bar chart of all Financial Institutions by their respective Final Rating.
-    - (C) Capital Adequacy: Shows 2 bar charts side by side, showing subratings of the 2 selected Capital Adequacy components (Tier 1 Capital Ratio and Debt to Equity Ratio).
-    - (A) Asset Quality: Shows 2 bar charts side by side, showing subratings of the 2 selected Asset Quality components (NPL to Total Gross Loans Ratio and Loan Loss Provision Rate Scaled).
-    - (M) Management: Shows 2 bar charts side by side, showing subratings of the 2 selected Management components (Asset Growth Rate 3Y Average and Efficiency Ratio).
-    - (E) Earnings: Shows 2 bar charts side by side, showing subratings of the 2 selected Earnings components (Return on Assets (ROA) and Interest Expenses to Interest Income Ratio).
-    - (L) Liquidity: Shows 2 bar charts side by side, showing subratings of the 2 selected Liquidity components (Liquidity Coverage Ratio (LCR) Ratings and Cash Ratio).
-    - (S) Capital Adequacy: Shows a bar chart showing subratings of the selected Sensitivity component (Non-Interest Income Share).
+    # st.write('''
+    # This section shows graphical representations of the CAMELS model results. It has 7 tabs:
+    # - Rating Final: Shows the bar chart of all Financial Institutions by their respective Final Rating.
+    # - (C) Capital Adequacy: Shows 2 bar charts side by side, showing subratings of the 2 selected Capital Adequacy components (Tier 1 Capital Ratio and Debt to Equity Ratio).
+    # - (A) Asset Quality: Shows 2 bar charts side by side, showing subratings of the 2 selected Asset Quality components (NPL to Total Gross Loans Ratio and Loan Loss Provision Rate Scaled).
+    # - (M) Management: Shows 2 bar charts side by side, showing subratings of the 2 selected Management components (Asset Growth Rate 3Y Average and Efficiency Ratio).
+    # - (E) Earnings: Shows 2 bar charts side by side, showing subratings of the 2 selected Earnings components (Return on Assets (ROA) and Interest Expenses to Interest Income Ratio).
+    # - (L) Liquidity: Shows 2 bar charts side by side, showing subratings of the 2 selected Liquidity components (Liquidity Coverage Ratio (LCR) Ratings and Cash Ratio).
+    # - (S) Capital Adequacy: Shows a bar chart showing subratings of the selected Sensitivity component (Non-Interest Income Share).
 
-    CAMELS Visualizations page also allows displaying results based on the selected year. It should be noted that missing values will show as 'None' in the bar plots without any rating category assigned.
+    # CAMELS Visualizations also allows displaying results based on the selected year. It should be noted that missing values will show as 'None' in the bar plots without any rating category assigned.
+    # ''')
+    st.write('''
+    This section shows graphical representations of the CAMELS model results. As Bar Charts and Time Series Comparison.''')
+    st.markdown('###### Bar Charts')
+    st.write('''
+    The Bar Charts part has 7 tabs:
+    - Rating Final: Shows the bar chart of all Financial Institutions by their respective Final Rating.
+    - (C) Capital Adequacy: Shows 2 bar charts side by side, showing subratings of the 2 selected Capital Adequacy components.
+    - (A) Asset Quality: Shows 2 bar charts side by side, showing subratings of the 2 selected Asset Quality components.
+    - (M) Management: Shows 2 bar charts side by side, showing subratings of the 2 selected Management components.
+    - (E) Earnings: Shows 2 bar charts side by side, showing subratings of the 2 selected Earnings components.
+    - (L) Liquidity: Shows 2 bar charts side by side, showing subratings of the 2 selected Liquidity components.
+    - (S) Capital Adequacy: Shows a bar chart showing subratings of the selected Sensitivity component.
+
+    CAMELS Visualizations page allows displaying results based on the selected year. It should be noted that missing values will show as 'None' in the bar plots without any rating category assigned.
     ''')
+    st.markdown('###### Time Series Comparison')
+    st.write('''
+    The Time Series Comparison part shows a time series plot for any selected CAMELS variable. The user selects the variable and the Institutions (multiselect allowed) for comparison.
+             ''')
 
     # Market Analysis Section
     st.markdown('#### Market Analysis')
     st.write('''
-    This section compares all financial institutions with the market (benchmark values). It includes:
-    - Total Assets Market Share and Total Gross Loans Market Share: Show financial institution share in the whole market in terms of the asset and gross loan size.
+    This section compares all financial institutions with the market (benchmark values). It is composed of three tables:
+    - "CAMELS Variable Relative Differences Compared to Benchmark" which shows the relative difference of each CAMELS variable compared to the benchmark.
+    - "CAMELS Variables - Benchmark" which shows the Benchmark CAMELS values (see below for details).
+    - "CAMELS Variables" which shows the raw CAMELS variables for completeness.
+    
+    The tables in the sections include:
+    - Total Assets Market Share and Total Gross Loans Market Share: shows financial institution share in the whole market in terms of the asset and gross loan size.
     - Relative Difference: Shows relative differences from the benchmark values for each selected CAMELS variable. On relative differences, conditional formatting is applied where **:green[green color]** 
-    signals better results compared to the benchmark while **:red[red color]** signals worst result compared to the benchmark. It should be noted that both positive and negative values can indicate better results in 
-    comparison to the benchmark (this depends on the variable).
+    signals better results compared to the benchmark while **:red[red color]** signals worse results compared to the benchmark. It should be noted that both positive and negative values can indicate better results in 
+    comparison to the benchmark (this depends on the interpretation of the variable).
     - Missing Data Handling: In order to have correct market analysis representation, data from all financial institutions should be filled in .xlsx file. If there is missing data, the cell is left blank and colored in black color.
     ''')
     st.markdown("<div style='text-align: left; font-size: 14px; font-weight: bold; font-style: italic; font-family: Arial';" 
@@ -228,8 +259,8 @@ with dashboard_help:
              average of the inputted Data.''')
 
 # CAMELS Variables Tab
-with camels_variables_info:
-    st.table(var_description_table(variables_description))
+# with camels_variables_info:
+#     st.table(var_description_table(variables_description))
 
 # Rating Description Tab
 with rating_description:

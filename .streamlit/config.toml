@@ -1,2 +1,4 @@
 [global]
 disableWidgetStateDuplicationWarning = true
+[theme]
+primaryColor="red"

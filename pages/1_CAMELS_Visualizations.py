@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px 
+import plotly.express as px
 
 # Set options
 st.set_page_config(page_title='CAMELS and Market Analysis Dashboard', layout='wide')
@@ -10,6 +10,7 @@ st.set_page_config(page_title='CAMELS and Market Analysis Dashboard', layout='wi
 df_final = st.session_state.get('camels_variables')
 df_ratings = st.session_state.get('ratings')
 df_bins = st.session_state.get('expert_bins')
+mask = st.session_state.get('mask')
 
 # Ratings Final Score Thresholds
 rating_thresholds = {
@@ -18,6 +19,14 @@ rating_thresholds = {
     '3rd': 3.4,
     '4th': 4.5
 }
+
+# Copy from temporary widget key to permanent key
+def keep(key):
+    st.session_state[key] = st.session_state[f"_{key}"]
+
+# Copy from permanent key to temporary widget key
+def unkeep(key):
+    st.session_state[f"_{key}"] = st.session_state[key]
 
 @st.cache_data(ttl=7200)
 def auto_adjust_height(ylabel_count, font_size=14, multiplier=2.0, padding=50):
@@ -97,13 +106,21 @@ def variables_final_plot(df_r, df_v, date, range_score, var):
 def update_selected_date_index():
     st.session_state['selected_date_index'] = sorted(df_ratings['Date'].unique()).index(st.session_state['selected_date'])
 
+def update_selected_var_index():
+    st.session_state['camels_var_index'] = df_final.columns[1:].to_list().index(st.session_state['camels_var'])
+
 # Checks if Data is Uploaded 
 if df_final is not None:
     
+    df_ratings.columns = list(df_ratings.columns[:3]) + mask
+    df_final.columns = list(df_ratings.columns[:1]) + mask
+    df_bins.index = mask
+    
+    st.subheader('Bar Charts')
     # Initialize Session State
     if 'selected_date_index' not in st.session_state:
         st.session_state['selected_date_index'] = len(sorted(df_ratings['Date'].unique())) - 1
-
+    
     # Create Date Selectbox with callback
     st.selectbox(
         r"$\textsf{\normalsize Select Date:}$", 
@@ -126,49 +143,79 @@ if df_final is not None:
     with capital_adequacy:
         tier_1_capital, debt_to_equity = st.columns(2)
         with tier_1_capital:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Tier 1 Capital Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[3])
         with debt_to_equity:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Debt to Equity Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[4])
 
     # Asset Quality Tab
     with asset_quality:
         npl_to_gross_loans, loan_loss_provision = st.columns(2)
         with npl_to_gross_loans:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'NPL to Total Gross Loans Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[5])
         with loan_loss_provision:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Loan Loss Provision Rate Scaled')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[6])
 
     # Management Tab
     with management:
         asset_growth, efficiency = st.columns(2)
         with asset_growth:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Asset Growth Rate 3Y Average')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[7])
         with efficiency:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Efficiency Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[8])
 
     # Earnings Tab
     with earnings:
         return_on_assets, interest_expenses_to_income = st.columns(2)
         with return_on_assets:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Return on Assets (ROA)')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[9])
         with interest_expenses_to_income:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Interest Expenses to Interest Income Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[10])
 
     # Liquidity Tab
     with liquidity:
         liquidity_coverage, cash = st.columns(2)
         with liquidity_coverage:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Liquidity Coverage Ratio (LCR)')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[11])
         with cash:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Cash Ratio')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[12])
 
     # Sensitivity Tab
     with sensitivity:
         non_interest_income, _placeholder = st.columns(2)
         with non_interest_income:
-            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, 'Non Interest Income Share')
+            variables_final_plot(df_ratings, df_final, st.session_state['selected_date'], df_bins, df_ratings.columns[13])
         with _placeholder:
             st.write('')
+    
+    st.markdown('---')
+    st.subheader('Time Series Comparison')
+    
+    # Initialize Session State
+    if 'inst_multiselect' not in st.session_state:
+        st.session_state['inst_multiselect'] = df_final.index[0:2].to_list()  # first 2 institutions
+
+    if 'camels_var_index' not in st.session_state:
+        st.session_state['camels_var_index'] = 1
+
+    st.selectbox(r"$\textsf{\normalsize Select CAMELS Variable:}$", 
+                                    options=df_final.columns[1:].to_list(), 
+                                    index=st.session_state['camels_var_index'],
+                                    key='camels_var',
+                                    on_change=update_selected_var_index
+                                    )
+    
+    unkeep('inst_multiselect')
+    selected_inst = st.multiselect(r"$\textsf{\normalsize Multiselect Institution:}$", 
+                                    options=df_final.index.unique().to_list(), 
+                                    default=st.session_state['inst_multiselect'],
+                                    key='_inst_multiselect',
+                                    on_change=keep,
+                                    args=(('inst_multiselect',)))
+    
+    fig = px.line(round(df_final.loc[selected_inst].reset_index().sort_values('Date'), 3), x='Date', y=st.session_state['camels_var'], 
+                  color='Institution Name', text=st.session_state['camels_var'])
+    fig.update_traces(textposition="bottom right")
+    st.plotly_chart(fig, use_container_width=True)
 
 # Display Text when Data Input is Missing
 else:
