@@ -2,7 +2,7 @@
 Demo rating model for financial institutions under [CAMELS framework](https://en.wikipedia.org/wiki/CAMELS_rating_system). Presented as a Streamlit App.
 
 ### Install the App
-To Install the needed environment click on the *Install App.bat* batch file, which will run the installation automatically (create the conda env: *streamlit_dashboard_demo*). Make sure the *requirement.txt* file is in the same directory as the .bat file
+To Install the needed environment click on the *Install App.bat* batch file, which will run the installation automatically (create the conda env: *streamlit_dashboard_demo*). Make sure the *requirement.txt* file is in the same directory as the batch file
 
 Alternatively, run the command
 ```
@@ -19,7 +19,7 @@ streamlit run Data_Upload_and_Information.py
 ### Description and usage
 Once the App is open navigate to the *Data Upload and Information* tab. Upload the *Data input example.xlsx* file.
 
-Any additional information is found inside the App on the *Help* tab.
+Any additional information is found inside the App under the *Help* tab.
 
 #### Additional link
 The App is deployed on the following [link](https://rating-model-app.streamlit.app/)
